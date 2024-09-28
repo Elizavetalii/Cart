@@ -1,0 +1,203 @@
+﻿html, body {
+    background-color: #5E5549; /* Устанавливаем цвет фона страницы */
+    color: #FFFFFF; /* Цвет текста - белый для контраста */
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.left-container {
+    flex: 1;
+    padding: 20px;
+}
+
+.search-container {
+    flex: 1;
+    padding: 20px;
+}
+
+.carousel-container {
+    margin-top: 20px;
+}
+
+.attracting-text {
+    font-size: 100%;
+    text-align: center;
+    font-family: 'Courier New';
+}
+
+body {
+    color: #FFFFFF; /* Цвет текста на белый для контраста */
+}
+
+.carousel-caption {
+    bottom: 2px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    padding: 0;
+}
+
+    .carousel-caption p {
+        margin: 7px;
+        color: white;
+        font-size: 130%;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        font-family: 'Courier New';
+    }
+
+.carousel-container {
+    max-width: 100%;
+    margin: 0 auto;
+    margin-left: 50px;
+}
+
+.imgStyle {
+    max-width: 100%;
+    max-height: 100%;
+    margin: auto;
+}
+
+.offers-container {
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 30px;
+    font-family: 'Courier New';
+    color: white;
+    text-align: center;
+}
+
+.card-container {
+    border-radius: 30px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 100px;
+}
+
+.card-container2 {
+    margin-top: 40px;
+    border-radius: 30px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 215px;
+}
+
+.card {
+    width: 18rem;
+    border-radius: 30px;
+    overflow: hidden;
+    background: #161712;
+}
+
+    .card img {
+        width: 100%;
+        height: auto;
+    }
+
+.card-body {
+    padding: 10px;
+    text-align: left;
+}
+
+.card-text {
+    font-size: 110%;
+    font-family: 'Courier New';
+    text-align: center;
+    color: white;
+}
+
+.card-title {
+    font-size: 150%;
+    font-family: 'Courier New';
+    text-align: center;
+    color: white;
+}
+
+.text-overlay {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    padding: 20px;
+    color: #FFFFFF; /* Цвет текста на белый для контраста */
+    width: 50%;
+}
+
+.btn-custom {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.call-to-action {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-family: 'Courier New';
+}
+
+.card {
+    border: 1px solid #e0e0e0;
+    border-radius: 1%;
+    overflow: hidden;
+}
+
+.card-img-top {
+    width: 100%;
+    height: auto;
+}
+
+.btn-custom {
+    display: inline-block;
+    background-color: #6c757d;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    margin-top: 10px;
+    text-align: center;
+    text-decoration: none;
+}
+
+    .btn-custom:hover {
+        background-color: #5a6268;
+    }
+
+.btn-sun,
+.btn-moon {
+    cursor: pointer;
+    border: none;
+    background: none;
+    outline: none;
+    width: 50px;
+    height: 50px;
+}
+
+#moon-image {
+    width: 100px;
+    cursor: pointer;
+}

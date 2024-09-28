@@ -1,0 +1,169 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+@* @model <Users>; *@
+
+
+<div class="text-center">
+    <form action="/search" method="get" id="search-form" style="display: flex; justify-content: center;">
+        <input type="text" name="query" id="search-input" placeholder="Поиск в SOULSHINE..." 
+        required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 25px; font-family: 'Courier New';" />
+        <button type="submit" class="btn" style="border: none; background: none; margin-left: 10px;">
+            <img src="~/media/1.svg" alt="Поиск" style="width: 24px; height: 24px;" />
+        </button>
+        <button type="button" id="voice-search-btn" class="btn" style="border: none; background: none; margin-left: 10px;">
+            <img src="~/media/2.svg" alt="Голосовой поиск" style="width: 24px; height: 24px;" />
+        </button>
+    </form>
+    <div class="container" style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0;">
+        <div class="left-container" style="flex: 1; padding-right: 20px;">
+            <img src="~/1320799.svg" alt="Логотип компании" style="max-width: 100%; height: auto;" />
+            <div class="attracting-text">
+                <h2>Найдите свою уникальность!</h2>
+                <p>Откройте мир изящных и стильных украшений, которые подчеркнут вашу индивидуальность.</p>
+            </div>
+        </div>
+   
+        <div class="search-container text-center" style="flex: 1;">
+
+            <div class="carousel-container" style="margin-top: 20px;">
+                <div id="carouselExampleDark" class="carousel carousel-dark slide">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active" data-bs-interval="10000">
+                            <div class="imgStyle">
+                                <img src="~/media/Коллекция на главной странице1.png" class="d-block w-100" alt="...">
+                            </div>
+                            <div class="carousel-caption d-none d-md-block">
+                                <p>Лимитированная осенняя коллекция обручальных</p>
+                                <p>колец от SOULSHINE</p>
+                            </div>
+                        </div>
+                        <div class="carousel-item" data-bs-interval="2000">
+                            <div class="imgStyle">
+                                <img src="~/media/Коллекция на главной странице2.png" class="d-block w-100" alt="...">
+                            </div>
+                            <div class="carousel-caption d-none d-md-block">
+                                <p>Прекрасные моменты, запечатленные</p>
+                                <p>в каждом украшении</p>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="imgStyle">
+                                <img src="~/media/Коллекция на главной странице3.png" class="d-block w-100" alt="...">
+                            </div>
+                            <div class="carousel-caption d-none d-md-block">
+                                <p>Наслаждайтесь природной красотой</p>
+                                <p>в каждой детали.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="offers-container">
+        <h2>Лучшие предложения</h2>
+        <div class="card-container">
+            <div class="card">
+                <img src="~/media/11.png" class="d-block w-100" alt="...">
+                <div class="card-body">
+                    <p class="card-text">3 505 000₽</p>
+                    <p class="card-text">Серьги из белого золота с бриллиантами</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="~/media/22.png" class="d-block w-100" alt="...">
+                <div class="card-body">
+                    <p class="card-text">2 665 000₽</p>
+                    <p class="card-text">Серьги  серебряные с жемчугоми</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="~/media/33.png" class="d-block w-100" alt="...">
+                <div class="card-body">
+                    <p class="card-text">3 505 000₽</p>
+                    <p class="card-text">Кольца из белого золота с бриллиантами</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="position-relative">
+                    <img src="~/media/бабочка.jpg" class="d-block w-100" alt="Брошь бабочка">
+                    <div class="text-overlay">
+                        <h2>Бренд: Butterfly Elegance</h2>
+                        <h3>Брошь бабочка</h3>
+                        <p>Эта изысканная брошь в форме бабочки добавит яркие акценты в ваш образ и подчеркнёт вашу индивидуальность.</p>
+                        <p class="call-to-action">Нажмите, чтобы узнать больше &rarr;</p>
+                        <button class="btn btn-custom">Смотреть</button>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="position-relative">
+                    <img src="~/media/кольцо.jpg" class="d-block w-100" alt="Кольцо с роскошным камнем">
+                    <div class="text-overlay">
+                        <h2>Бренд: Luxuria Gems</h2>
+                        <h3>Кольцо с роскошным камнем</h3>
+                        <p>Это уникальное кольцо с роскошным камнем сделает ваш стиль неповторимым и элегантным.</p>
+                        <p class="call-to-action">Нажмите, чтобы узнать больше &rarr;</p>
+                        <button class="btn btn-custom">Смотреть</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-container2">
+        <div class="card mb-12" style="height: 100%;">
+            <img src="~/media/бутик.png" class="card-img-top" alt="Бутик">
+            <div class="card-body d-flex flex-column align-items-center justify-content-between">
+                <h5 class="card-title">Бутики</h5>
+                <p class="card-text">Здесь вы найдете уникальные изделия, которые подчеркнут вашу индивидуальность.</p>
+                <div class="text-center">
+                    <a href="#" class="btn btn-custom">Подробнее</a>
+                </div>
+            </div>
+        </div>
+   
+        <div class="card mb-12" style="height: 100%;">
+            <img src="~/media/бренд.png" class="card-img-top" alt="Бренд">
+            <div class="card-body d-flex flex-column align-items-center justify-content-between">
+                <h5 class="card-title">Бренды</h5>
+                <p class="card-text">Предлагаем только продукцию известных брендов, которые зарекомендовали себя.</p>
+                <div class="text-center">
+                    <a href="#" class="btn btn-custom">Подробнее</a>
+                </div>
+            </div>
+        </div>
+      
+        <div class="card mb-12" style="height: 100%;">
+            <img src="~/media/индивидуальность.png" class="card-img-top" alt="Индивидуальность">
+            <div class="card-body d-flex flex-column align-items-center justify-content-between">
+                <h5 class="card-title">Индивидуальность</h5>
+                <p class="card-text">Каждое изделие создается с акцентом на индивидуальность и уникальность клиента.</p>
+                <div class="text-center">
+                    <a href="#" class="btn btn-custom">Подробнее</a>
+                </div>
+            </div>
+        </div>
+     </div>
+ </div>

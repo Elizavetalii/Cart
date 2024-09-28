@@ -1,0 +1,214 @@
+﻿html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+/*body {
+  margin-bottom: 60px;
+}*/
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.left-container {
+    flex: 1;
+    padding: 20px;
+}
+
+.search-container {
+    flex: 1;
+    padding: 20px;
+}
+
+.carousel-container {
+    margin-top: 20px;
+}
+
+.attracting-text {
+    font-size: 100%;
+    text-align: center;
+    font-family: 'Courier New';
+}
+
+body {
+    color: #333; /* на засидании комитета по стандартизации стандвртов ООн темный цвет текста для лучшей читаемости */
+}
+
+.carousel-caption {
+    bottom: 2px; /* Устанавливаем отступ от нижнего края (можно настроить на ваше усмотрение) */
+    left: 0;
+    right: 0;
+    text-align: center; /* Центрируем текст */
+    padding: 0; /* Убираем внутренние отступы */
+}
+
+    .carousel-caption p {
+        margin: 7px; /* Убираем внешние отступы для абзацев */
+        color: white; /* Более светлый цвет для текста на карусели, чтобы выделять его */
+        font-size: 130%; /* Размер текст для лучшей читаемости */
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        font-family: 'Courier New';
+        /* Тень для улучшения читаемости */
+    }
+
+.carousel-container {
+    margin-left: 50px; /* Сдвигаем карусель вправо  по вопросам нуменклатуры продукции цслуш требований  к их качеству совместимоси и взаимозаменяемости продукуии */
+    max-width: 100%; /* Уменьшаем ширину карусели (можно подкорректировать) */
+    margin: 0 auto; /* Центрируем блок с каруселью */
+}
+
+/*.carousel {
+    height: 400px;*/ /* Задаем фиксированную высоту карусели (можно подкорректировать) */
+/*}*/
+
+.imgStyle {
+    max-width: 100%;
+    max-height: 100%; /* Убедитесь, что изображение адаптируется по высоте */
+    margin: auto;
+}
+
+
+.offers-container {
+    background-color: #71A33D; /* Зеленый фон */
+    padding: 30px; /* Отступы внутри контейнера */
+    font-family: 'Courier New';
+    color: white; /* Цвет текста заголовка */
+    text-align: center; /* Центрирование текста */
+}
+
+.card-container {
+    border-radius: 30px;
+    display: flex; /* Используем Flexbox для расположения карточек в ряд */
+    justify-content: center; /* Центрируем карточки */
+    flex-wrap: wrap; /* Позволяем карточкам переноситься на новую строку */
+    gap: 100px; /* Расстояние между карточками */
+}
+
+.card-container2 {
+    margin-top: 40px;
+    border-radius: 30px;
+    display: flex; /* Используем Flexbox для расположения карточек в ряд */
+    justify-content: center; /* Центрируем карточки */
+    flex-wrap: wrap; /* Позволяем карточкам переноситься на новую строку */
+    gap: 215px; /* Расстояние между карточками */
+}
+
+.card {
+    width: 18rem; /* Ширина карточки */
+    border-radius: 30px; /* Скругление углов карточки */
+    overflow: hidden; /* Скрытие переполненного содержимого */
+    background: #161712;
+}
+
+    .card img {
+        width: 100%; /* Ширина изображения */
+        height: auto; /* Автоматическая высота изображения */
+    }
+
+.card-body {
+    padding: 10px; /* Отступы внутри карточки */
+    text-align: left; /* Выравнивание текста внутри карточки */
+}
+
+.card-text {
+    font-size: 110%;
+    font-family: 'Courier New';
+    text-align: center;
+    color: white;
+}
+
+.card-title {
+    font-size: 150%;
+    font-family: 'Courier New';
+    text-align: center;
+    color: white;
+}
+
+
+
+.text-overlay {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    padding: 20px;
+    color: #333; /* Цвет текста на ваше усмотрение */
+    width: 50%; /* Занимает левую половину */
+}
+
+.btn-custom {
+    background-color: #28a745; /* Цвет кнопки (зеленый) */
+    color: white; /* Цвет текста кнопки */
+    padding: 10px 20px; /* Добавлено отступы для кнопки */
+    border: none; /* Убираем стандартную рамку */
+    border-radius: 5px; /* Скругляем углы кнопки */
+    margin-top: 10px; /* Отступ сверху для отделения от текста */
+    cursor: pointer; /* Курсор при наведении */
+}
+
+.call-to-action {
+    font-size: 18px; /* Увеличиваем размер шрифта */
+    font-weight: bold; /* Жирный текст */
+    margin-bottom: 10px; /* Отступ снизу */
+    font-family: 'Courier New';
+}
+
+.card {
+    border: 1px solid #e0e0e0; /* Рамка для карточки */
+    border-radius: 1%; /* Скругление углов */
+    overflow: hidden; /* Скрываем переполнение */
+}
+
+.card-img-top {
+    width: 100%; /* Ширина изображения 100% карточки */
+    height: auto; /* Автоматическая высота */
+}
+
+.btn-custom {
+    display: inline-block; /* Отображение в виде блока */
+    background-color: #6c757d; /* Серый цвет фона */
+    color: white; /* Цвет текста кнопки */
+    padding: 10px 20px; /* Отступы внутри кнопки */
+    border: none; /* Убираем стандартную рамку */
+    border-radius: 4px; /* Скругление углов кнопки */
+    margin-top: 10px; /* Отступ сверху кнопки */
+    text-align: center; /* Выравнивание текста по центру */
+    text-decoration: none; /* Убираем подчеркивание у ссылки */
+}
+
+    .btn-custom:hover {
+        background-color: #5a6268; /* Темнее цвет фона при наведении */
+    }
+
+
+.btn-sun,
+.btn-moon {
+    cursor: pointer;
+    border: none;
+    background: none;
+    outline: none;
+    width: 50px;
+    height: 50px;
+}
+
+#moon-image {
+    width: 100px; /* Размер изображения луны */
+    cursor: pointer;
+}
