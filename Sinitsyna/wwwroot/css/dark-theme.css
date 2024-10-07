@@ -57,13 +57,13 @@ body {
     padding: 0;
 }
 
-    .carousel-caption p {
-        margin: 7px;
-        color: white;
-        font-size: 130%;
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-        font-family: 'Courier New';
-    }
+.carousel-caption p {
+    margin: 7px;
+    color: white;
+    font-size: 130%;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    font-family: 'Courier New';
+}
 
 .carousel-container {
     max-width: 100%;
@@ -109,10 +109,10 @@ body {
     background: #161712;
 }
 
-    .card img {
-        width: 100%;
-        height: auto;
-    }
+.card img {
+    width: 100%;
+    height: auto;
+}
 
 .card-body {
     padding: 10px;
@@ -139,7 +139,7 @@ body {
     left: 0;
     transform: translateY(-50%);
     padding: 20px;
-    color: #FFFFFF; /* Цвет текста на белый для контраста */
+    color: #FFFFFF;
     width: 50%;
 }
 
@@ -200,4 +200,50 @@ body {
 #moon-image {
     width: 100px;
     cursor: pointer;
+}
+
+.btn-beige {
+    background-color: #f5f5dc; /* Бежевый цвет */
+    color: #000; /* Черный текст, чтобы был читаемым на бежевом фоне */
+}
+
+    .btn-beige:hover {
+        background-color: #e5e5b8; /* Цвет в состоянии наведения */
+    }
+
+.btn-heart {
+    background: transparent; /* Прозрачный фон */
+    border: none; /* Без границ */
+    color: #ccc; /* Серый цвет по умолчанию */
+    font-size: 1.5rem; /* Увеличенный размер шрифта для сердечка */
+    transition: color 0.3s; /* Плавный переход цвета */
+}
+
+    .btn-heart:hover {
+        color: #ff0000; /* Красный цвет при наведении */
+    }
+
+    .btn-heart.active {
+        color: #ff0000; /* Красный цвет при нажатии */
+    }
+
+.btn-toolbar {
+    display: flex; /* Для горизонтального выравнивания */
+    gap: 10px; /* Это создаёт пробел между элементами */
+}
+
+.btn {
+    border: none; /* Убираем стандартные стили для кнопок */
+    background: none; /* Убираем фоновый цвет */
+    cursor: pointer; /* Курсор при наведении */
+    padding: 5px 10px; /* Отступы внутри кнопок */
+    display: flex; /* Нужно для вертикального центрирования содержимого */
+    align-items: center; /* Центруем элементы по вертикали */
+}
+
+/* Можно также добавить стили для кнопок heart и cart (в корзину) */
+.btn-heart,
+.btn-beige {
+    /* Здесь можно задать одинаковые размеры или стили для всех кнопок */
+    height: 40px; /* Высота кнопок */
 }

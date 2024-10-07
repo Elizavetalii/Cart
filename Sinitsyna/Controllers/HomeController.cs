@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Sinitsyna.Models;
 using System.Diagnostics;
 
@@ -6,47 +7,48 @@ namespace Sinitsyna.Controllers
 {
     public class HomeController : Controller
     {
-        AppDbContext _context;
+        private readonly AppDbContext _context;
 
+        public HomeController(AppDbContext context)
+        {
+            _context = context;
+        }
 
-        private readonly ILogger<HomeController> _logger;
-        //public HomeController(AppDbContext context)
-        //{
-        //    _context = context;
-        //}
         public async Task<IActionResult> Index()
         {
-            var theme = HttpContext.Items["Theme"]?.ToString();
+            // Получаем тему из cookies
+            var theme = Request.Cookies["Theme"] ?? "light"; 
             ViewBag.Theme = theme;
-            //return View(await _context.Users.ToListAsync());
-            return View();
+
+            return View(await _context.Products.ToListAsync());
         }
 
         [HttpPost]
         public IActionResult ToggleTheme()
         {
-            var currentTheme = HttpContext.Items["Theme"].ToString();
+            var currentTheme = Request.Cookies["Theme"] ?? "light";
             var newTheme = currentTheme == "dark" ? "light" : "dark";
-
-            // Устанавливаем новую тему в cookie
             Response.Cookies.Append("Theme", newTheme);
 
-            return RedirectToAction("Index"); // Возвращаемся на главную страницу
+            return RedirectToAction("Index");
         }
 
-        public HomeController(ILogger<HomeController> logger)
+        public async Task<IActionResult> Catalog()
         {
-            _logger = logger;
-        }
+            var theme = Request.Cookies["Theme"] ?? "light"; 
+            ViewBag.Theme = theme;
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+            var products = await _context.Products.Include(p => p.ProductType)
+                                                  .Include(p => p.ProductMaterial)
+                                                  .Include(p => p.ProductImages)
+                                                  .ToListAsync();
 
-        public IActionResult Catalog()
-        {
-            return View();
+            var materials = await _context.ProductMaterials.ToListAsync();
+            var types = await _context.ProductTypes.ToListAsync();
+
+            var model = (products.AsEnumerable(), materials.AsEnumerable(), types.AsEnumerable());
+
+            return View(model);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

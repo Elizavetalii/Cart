@@ -17,9 +17,6 @@ html {
     min-height: 100%;
 }
 
-/*body {
-  margin-bottom: 60px;
-}*/
 
 .container {
     display: flex;
@@ -211,4 +208,53 @@ body {
 #moon-image {
     width: 100px; /* Размер изображения луны */
     cursor: pointer;
+}
+
+
+.btn-beige {
+    background-color: #f5f5dc; /* Бежевый цвет */
+    color: #000; /* Черный текст, чтобы был читаемым на бежевом фоне */
+}
+
+    .btn-beige:hover {
+        background-color: #e5e5b8; /* Цвет в состоянии наведения */
+    }
+
+.btn-heart {
+    background: transparent; /* Прозрачный фон */
+    border: none; /* Без границ */
+    color: #ccc; /* Серый цвет по умолчанию */
+    font-size: 1.5rem; /* Увеличенный размер шрифта для сердечка */
+    transition: color 0.3s; /* Плавный переход цвета */
+}
+
+    .btn-heart:hover {
+        color: #ff0000; /* Красный цвет при наведении */
+    }
+
+    .btn-heart.active {
+        color: #ff0000; /* Красный цвет при нажатии */
+    }
+.btn-toolbar {
+    display: flex; /* Для горизонтального выравнивания */
+    gap: 10px; /* Это создаёт пробел между элементами */
+}
+
+.btn {
+    border: none; /* Убираем стандартные стили для кнопок */
+    background: none; /* Убираем фоновый цвет */
+    cursor: pointer; /* Курсор при наведении */
+    padding: 5px 10px; /* Отступы внутри кнопок */
+    display: flex; /* Нужно для вертикального центрирования содержимого */
+    align-items: center; /* Центруем элементы по вертикали */
+}
+
+/* Можно также добавить стили для кнопок heart и cart (в корзину) */
+.btn-heart,
+.btn-beige {
+    padding: 10px 20px; /* Отступы внутри кнопки */
+    border: none; /* Убираем стандартную рамку */
+    border-radius: 4px; /* Скругление углов кнопки */
+    /* Здесь можно задать одинаковые размеры или стили для всех кнопок */
+    height: 40px; /* Высота кнопок */
 }

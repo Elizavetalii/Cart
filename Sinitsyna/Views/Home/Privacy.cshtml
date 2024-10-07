@@ -1,6 +1,24 @@
 ﻿@{
     ViewData["Title"] = "Каталог";
+    List<string> list = new List<string>();
 }
+
+ @model IEnumerable<Product>;
 <h1>@ViewData["Title"]</h1>
 
+
 <p>В разработке...</p>
+
+<ul>
+    @foreach (var item in list)
+    {
+        <li>@item</li>
+    }
+</ul>
+
+<ul>
+    @foreach(var item in Model)
+    {
+        <li>ID: @item.Id_product, Name: @item.Product_name</li>
+    }
+</ul>

@@ -1,5 +1,99 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model (IEnumerable<Sinitsyna.Models.Product>, IEnumerable<Sinitsyna.Models.ProductMaterial>, IEnumerable<Sinitsyna.Models.ProductType>);
+
 @{
+    ViewData["Title"] = "Каталог";
+    List<string> list = new List<string>();
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha384-DyZvtl6Btbm5PKvly4LD68QdEGUNNB7e5r0M0OsB+Y8ixirA7mhwLEBGuF20JG7w" crossorigin="anonymous">
+    bool isFavorite = false;
 }
+
+<body>
+    <form action="/search" method="get" id="search-form" style="display: flex; justify-content: center;">
+        <input type="text" name="query" id="search-input" placeholder="Поиск в каталоге SOULSHINE..."
+               required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 25px; font-family: 'Courier New';" />
+        <button type="submit" class="btn" style="border: none; background: none; margin-left: 10px;">
+            <img src="~/media/1.svg" alt="Поиск" style="width: 24px; height: 24px;" />
+        </button>
+        <button type="button" id="voice-search-btn" class="btn" style="border: none; background: none; margin-left: 10px;">
+            <img src="~/media/2.svg" alt="Голосовой поиск" style="width: 24px; height: 24px;" />
+        </button>
+    </form>
+
+    <div class="container" style="display: flex;">
+        <div class="col-3" style="background-color: #333; padding: 15px;">
+            <h5 style="text-align: center;color: #fefbd8;">Все категории</h5>
+            <h5 style="text-align: center;color: #ffff;">Материалы</h5>
+            @foreach (var material in Model.Item2)
+            {
+                <a href="#" class="d-block" style="color: #fefbd8; margin: 0 10px;">
+                    @material.Material_name
+                </a>
+            }
+
+            <h5 style="text-align: center;color: #ffff;">Типы товаров</h5>
+            @foreach (var type in Model.Item3)
+            {
+                <a href="#" class="d-block" style="color: #fefbd8; margin: 0 10px;">
+                    @type.Product_type_name
+                </a>
+            }
+        </div>
+
+        <div class="col-9">
+            <div class="row">
+                @if (Model.Item1 != null && Model.Item1.Any())
+                {
+                    foreach (var item in Model.Item1)
+                    {
+                        <div class="col-md-4">
+                            <div class="card">
+                                <img src="@item.ProductImages?.FirstOrDefault()?.Url_image" class="card-img-top" alt="@item.Product_name" />
+                                <div class="card-body">
+                                    <h5 class="card-title">@item.Product_name</h5>
+                                    <p class="card-text">Описание: @item.Product_description</p>
+                                    <p class="card-text"><strong>Цена:</strong> @item.Price.ToString("C")</p>
+                                    <p class="card-text"><strong>Доступное количество:</strong> @item.Quantity</p>
+                                    <div class="btn-toolbar">
+                                        <a href="#" title="Добавить товар в заказ" class="btn-beige">Добавить в заказ</a>
+                                        <button class="btn btn-heart" title="Добавить в избранное" data-is-favorite="false">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart">
+                                                <path d="M20.84 4.61A5.92 5.92 0 0012 8.47 5.92 5.92 0 003.16 4.61 5.89 5.89 0 000 10.77c0 5.39 9.99 11.43 12 11.83 2.03-.4 12-6.44 12-11.83a5.89 5.89 0 00-3.16-6.16z"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p>Нет доступных продуктов.</p>
+                }
+            </div>
+        </div>
+    </div>
+    <script>
+        document.querySelectorAll('.btn-heart').forEach(button => {
+            button.addEventListener('click', function () {
+                const isFavorite = this.getAttribute('data-is-favorite') === 'true';
+                this.setAttribute('data-is-favorite', !isFavorite);
+
+                const heartIcon = this.querySelector('svg');
+                if (isFavorite) {
+
+                    heartIcon.outerHTML = `<!-- Заменяем на пустое сердце -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart">
+                          <path d="M20.84 4.61A5.92 5.92 0 0012 8.47 5.92 5.92 0 003.16 4.61 5.89 5.89 0 000 10.77c0 5.39 9.99 11.43 12 11.83 2.03-.4 12-6.44 12-11.83a5.89 5.89 0 00-3.16-6.16z"></path>
+                        </svg>`;
+                } else {
+                    // Меняем на закрашенное сердце
+                    heartIcon.outerHTML = `<!-- Заменяем на закрашенное сердце -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="24" viewBox="0 0 24 24" fill="red">
+                          <path d="M20.84 4.61A5.92 5.92 0 0012 8.47 5.92 5.92 0 003.16 4.61 5.89 5.89 0 000 10.77c0 5.39 9.99 11.43 12 11.83 2.03-.4 12-6.44 12-11.83a5.89 5.89 0 00-3.16-6.16z"></path>
+                        </svg>`;
+                }
+            });
+        });
+    </script>
+</body>
