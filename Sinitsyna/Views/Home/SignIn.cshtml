@@ -1,0 +1,27 @@
+﻿@model Sinitsyna.Models.LoginModel
+
+<body>
+<form asp-antiforgery="true" asp-action="SignIn" asp-controller="Home" autocomplete="off" class="row" style="margin-bottom: 5px;">
+    <fieldset>
+        <div class="form-group col-12">
+            <label for="login" class="form-label mt-4">Логин (Email)</label>
+            <input asp-for="@Model.Login" name="Login" type="email" class="form-control" id="login" required placeholder="Введите email"
+                   minlength="5" maxlength="50" autofocus />
+            <small id="emailHelp" class="form-text text-muted">Никому не сообщайте данные от аккаунта!</small>
+            <span asp-validation-for="Login"></span>
+        </div>
+        <div class="form-group col-12">
+            <label for="password" class="form-label mt-4">Пароль</label>
+            <input asp-for="@Model.Password" name="Password" type="password" class="form-control" id="password"
+                   placeholder="Введите пароль" />
+            <span asp-validation-for="Password"></span>
+        </div>
+        <button type="submit" class="btn btn-outline-info mt-3">Войти</button>
+    </fieldset>
+</form>
+
+<div class="mt-3">
+    <p>Нет аккаунта? <a href="@Url.Action("SignUp", "Home")">Зарегистрируйтесь</a></p>
+</div>
+</body>
+

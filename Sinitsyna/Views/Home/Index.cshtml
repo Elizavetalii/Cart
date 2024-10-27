@@ -1,6 +1,11 @@
 ﻿@{
-    ViewData["Title"] = "Home";
+    ViewBag.Title = "Главная страница";
 }
+
+<p>Добро пожаловать, @ViewBag.UserName!</p>
+<p>Вы наш любимый @ViewBag.UserRole ♥</p>
+
+<a href="@Url.Action("Logout")">Выход</a>
 
 <div class="text-center">
     <form action="/search" method="get" id="search-form" style="display: flex; justify-content: center;">
@@ -165,3 +170,4 @@
         </div>
      </div>
  </div>
+

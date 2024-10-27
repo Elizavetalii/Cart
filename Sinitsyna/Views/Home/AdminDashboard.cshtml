@@ -1,0 +1,1029 @@
+﻿@model ( IEnumerable<Sinitsyna.Models.Product>, IEnumerable<Sinitsyna.Models.Boutique>, IEnumerable<Sinitsyna.Models.ProductMaterial>, IEnumerable<Sinitsyna.Models.ProductType>, IEnumerable<Sinitsyna.Models.User>, IEnumerable<Sinitsyna.Models.Role>);
+
+@{
+    ViewData["Title"] = "Панель Администратора";
+}
+
+<style>
+    .button {
+        background-color: #f5deb3; /* Бежевый цвет */
+        border: none;
+        color: black;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+</style>
+
+<h2>Панель Администратора</h2>
+<p>Добро пожаловать, @ViewBag.UserName!</p>
+<p>Ваша должность: @ViewBag.UserRole</p>
+
+
+<a id="showAddProductForm" style="cursor:pointer;" class="button">Добавить новый товар</a>
+<div id="addProductForm" style="display:none;">
+    <h4>Добавление нового товара</h4>
+    <form id="formAddProduct" method="post">
+        <label for="Product_name">Название товара:</label>
+        <input type="text" name="Product_name" required>
+
+        <label for="Price">Цена:</label>
+        <input type="number" name="Price" step="0.01" required>
+
+        <label for="Quantity">Количество:</label>
+        <input type="number" name="Quantity" required>
+
+        <label for="Product_description">Описание товара:</label>
+        <textarea name="Product_description" required></textarea>
+
+        <label for="Boutique">Адрес бутика:</label>
+        <select name="Id_boutique" id="BoutiqueSelect" required>
+            @foreach (var boutique in Model.Item2)
+            {
+                <option value="@boutique.Id_boutique">@boutique.Boutique_address</option>
+            }
+        </select>
+
+        <label for="ProductType">Тип товара:</label>
+        <select name="Id_type" id="ProductTypeSelect">
+            @foreach (var type in Model.Item4)
+            {
+                <option value="@type.Id_type">@type.Product_type_name</option>
+            }
+        </select>
+
+        <label for="ProductMaterial">Материал товара:</label>
+        <select name="Id_material" id="ProductMaterialSelect">
+            @foreach (var material in Model.Item3)
+            {
+                <option value="@material.Id_material">@material.Material_name</option>
+            }
+        </select>
+
+        <label for="imageUrl">URL изображения:</label>
+        <input type="text" name="imageUrl" required>
+
+    <button type="submit" class="button">Добавить</button>
+    </form>
+</div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID товара</th>
+                <th>Название товара</th>
+                <th>Цена</th>
+                <th>Количество</th>
+                <th>Описание товара</th>
+                <th>Изображения</th>
+                <th>Адрес бутика</th>
+                <th>Тип товара</th>
+                <th>Материал товара</th>
+
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody id="productTableBody">
+            @if (Model.Item1 != null && Model.Item1.Any())
+            {
+                foreach (var product in Model.Item1)
+                {
+                    <tr data-id="@product.Id_product">
+                        <td>@product.Id_product</td>
+                        <td>
+                            <span class="product-name">@product.Product_name</span>
+                            <textarea class="edit-product-name" style="display:none;">@product.Product_name</textarea>
+                        </td>
+                        <td>
+                            <span class="product-price">@product.Price</span> ₽
+                            <input type="number" class="edit-product-price" value="@product.Price" style="display:none;" />
+                        </td>
+                        <td>
+                            <span class="product-quantity">@product.Quantity</span> ед.
+                            <input type="number" class="edit-product-quantity" value="@product.Quantity" style="display:none;" />
+                        </td>
+                        <td>
+                            <span class="product-description">@product.Product_description</span>
+                            <textarea class="edit-product-description" style="display:none;">@product.Product_description</textarea>
+                        </td>
+                        <td>
+                            @foreach (var image in product.ProductImages)
+                            {
+                                <img src="@image.Url_image" style="width: 50px; height: auto;" />
+                            }
+                            <input type="text" class="edit-product-image-url" value="@string.Join(", ", product.ProductImages.Select(img => img.Url_image))" style="display:none;" />
+                        </td>
+                        <td>
+                            @Html.DropDownList("Id_boutique",
+                                     new SelectList(Model.Item2, "Id_boutique", "Boutique_address", product.Id_boutique),
+                                     new { @class = "edit-boutique", style = "display:none;" })
+                            <span>@product.Boutique?.Boutique_address</span>
+                        </td>
+                        <td>
+                            @Html.DropDownList("Id_type",
+                                     new SelectList(Model.Item4, "Id_type", "Product_type_name", product.Id_type),
+                                     new { @class = "edit-product-type", style = "display:none;" })
+                            <span>@product.ProductType?.Product_type_name</span>
+                        </td>
+                        <td>
+                            @Html.DropDownList("Id_material",
+                                     new SelectList(Model.Item3, "Id_material", "Material_name", product.Id_material),
+                                     new { @class = "edit-product-material", style = "display:none;" })
+                            <span>@product.ProductMaterial?.Material_name</span>
+                        </td>
+                        <td>
+                            <button class="edit-product button">Редактировать</button>
+                            <button class="save-product button" style="display:none;">Сохранить изменения</button>
+                            <button class="delete-product button" data-id="@product.Id_product">Удалить</button>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr><td colspan="10">Нет данных для отображения товаров.</td></tr>
+            }
+        </tbody>
+    </table>
+
+    <h3>Управление пользователями</h3>
+
+    <a id="showAddUserForm" style="cursor:pointer;" class="button">Добавить нового пользователя</a>
+    <div id="addUserForm" style="display:none;">
+        <h4>Добавление нового пользователя</h4>
+        <form id="formAddUser" method="post">
+            <label for="First_name">Имя:</label>
+            <input type="text" name="First_name" required>
+
+            <label for="Last_name">Фамилия:</label>
+            <input type="text" name="Last_name" required>
+
+            <label for="Middle_name">Отчество:</label>
+            <input type="text" name="Middle_name">
+
+            <label for="Id_role">Роль:</label>
+            <select name="Id_role" required>
+                @foreach (var role in Model.Item6)
+                {
+                    <option value="@role.Id_role">@role.Role_name</option>
+                }
+            </select>
+
+            <label for="User_login">Email:</label>
+            <input type="email" name="User_login" required>
+
+            <label for="User_password">Пароль:</label>
+            <input type="password" name="User_password" required>
+
+            <button type="submit" class="button">Добавить</button>
+        </form>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID пользователя</th>
+                <th>Имя пользователя</th>
+                <th>Фамилия пользователя</th>
+                <th>Отчество пользователя</th>
+                <th>Email</th>
+                <th>Пароль</th>
+                <th>Роль</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody id="userTableBody">
+            @if (Model.Item5 != null && Model.Item5.Any())
+            {
+                foreach (var user in Model.Item5)
+                {
+                    <tr data-id="@user.Id_user">
+                        <td>@user.Id_user</td>
+                        <td>
+                            <span class="user-first-name">@user.First_name</span>
+                            <input type="text" class="edit-user-first-name" value="@user.First_name" style="display:none;" />
+                        </td>
+                        <td>
+                            <span class="user-last-name">@user.Last_name</span>
+                            <input type="text" class="edit-user-last-name" value="@user.Last_name" style="display:none;" />
+                        </td>
+                        <td>
+                            <span class="user-middle-name">@user.Middle_name</span>
+                            <input type="text" class="edit-user-middle-name" value="@user.Middle_name" style="display:none;" />
+                        </td>
+                        <td>
+                            <span class="user-email">@user.User_login</span>
+                            <input type="email" class="edit-user-email" value="@user.User_login" style="display:none;" />
+                        </td>
+                        <td>
+                            <span class="user-password">******</span> <!-- Для безопасности показываем только звездочки -->
+                            <input type="password" class="edit-user-password" value="@user.User_password" style="display:none;" />
+                        </td>
+                        <td>
+                            @Html.DropDownList("Role_id",
+                                     new SelectList(Model.Item6, "Id_role", "Role_name", user.Role?.Id_role),
+                                     new { @class = "edit-user-role", style = "display:none;" })
+                            <span>@user.Role?.Role_name</span>
+                        </td>
+                        <td>
+                            <button class="edit-user button">Редактировать</button>
+                            <button class="save-user button" style="display:none;">Сохранить изменения</button>
+                            <button class="delete-user button" data-id="@user.Id_user">Удалить</button>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr><td colspan="8">Нет данных для отображения пользователей.</td></tr>
+            }
+        </tbody>
+    </table>
+
+
+    <h3>Управление ролями</h3>
+    <a id="showAddRoleForm" style="cursor:pointer;" class="button">Добавить новую роль</a>
+
+    <div id="addRoleForm" style="display:none;">
+        <h4>Добавление новой роли</h4>
+        <form id="formAddRole" method="post" asp-action="CreateRole">
+            <label for="Role_name">Название роли:</label>
+            <input type="text" name="Role_name" required>
+
+            <button type="submit" class="button">Добавить</button>
+        </form>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID роли</th>
+                <th>Название роли</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody id="roleTableBody">
+            @if (Model.Item6 != null && Model.Item6.Any())
+            {
+                foreach (var role in Model.Item6)
+                {
+                    <tr data-id="@role.Id_role">
+                        <td>@role.Id_role</td>
+                        <td>
+                            <span class="role-name">@role.Role_name</span>
+                            <input type="text" class="edit-role-name" value="@role.Role_name" style="display:none;" />
+                        </td>
+                        <td>
+                            <button class="edit-role button">Редактировать</button>
+                            <button class="save-role button" style="display:none;">Сохранить изменения</button>
+                            <button class="delete-role button" data-id="@role.Id_role">Удалить</button>
+   
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr><td colspan="3">Нет данных для отображения ролей.</td></tr>
+            }
+        </tbody>
+    </table>
+
+    <h3>Управление типами и материалами</h3>
+
+    <h4>Типы</h4>
+    <a id="showAddTypeForm" style="cursor:pointer;" class="button">Добавить новый тип продукта</a>
+
+    <div id="addTypeForm" style="display:none;">
+        <h4>Добавление нового типа продукта</h4>
+        <form id="formAddType" method="post" asp-action="CreateProductType">
+            <label for="Product_type_name">Название типа:</label>
+            <input type="text" name="Product_type_name" required>
+            <button type="submit" class="button">Добавить</button>
+        </form>
+    </div>
+
+    <table>
+        <thead>
+            <tr><th>ID типа</th><th>Название типа</th><th>Действия</th></tr>
+        </thead>
+        <tbody id="typeTableBody">
+            @if (Model.Item4 != null && Model.Item4.Any())
+            {
+                foreach (var type in Model.Item4)
+                {
+                    <tr data-id="@type.Id_type">
+                        <td>@type.Id_type</td>
+                        <td>
+                            <span class="product-type-name">@type.Product_type_name</span>
+                            <input type="text" class="edit-product-type-name" value="@type.Product_type_name" style="display:none;" />
+                        </td>
+                        <td>
+                            <button class="edit-product-type button">Редактировать</button>
+                            <button class="save-product-type button" style="display:none;">Сохранить изменения</button>
+                            <button class="delete-product-type button" data-id="@type.Id_type">Удалить</button>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr><td colspan="3">Нет данных для отображения типов продуктов.</td></tr>
+            }
+        </tbody>
+    </table>
+
+    <h4>Материалы</h4>
+    <a id="showAddMaterialForm" style="cursor:pointer;" class="button">Добавить новый материал</a>
+
+    <div id="addMaterialForm" style="display:none;">
+        <h4>Добавление нового материала</h4>
+        <form id="formAddMaterial" method="post" asp-action="CreateProductMaterial">
+            <label for="Material_name">Название материала:</label>
+            <input type="text" name="Material_name" required>
+            <button type="submit" class="button">Добавить</button>
+        </form>
+    </div>
+
+    <table>
+        <thead><tr><th>ID материала</th><th>Название материала</th><th>Действия</th></tr></thead>
+        <tbody id="materialTableBody">
+            @if (Model.Item3 != null && Model.Item3.Any())
+            {
+                foreach (var material in Model.Item3)
+                {
+                    <tr data-id="@material.Id_material">
+                        <td>@material.Id_material</td>
+                        <td>
+                            <span class="material-name">@material.Material_name</span>
+                            <input type="text" class="edit-material-name" value="@material.Material_name" style="display:none;" />
+                        </td>
+                        <td>
+                            <button class="edit-material button">Редактировать</button>
+                            <button class="save-material button" style="display:none;">Сохранить изменения</button>
+                            <button class="delete-material button" data-id="@material.Id_material">Удалить</button>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr><td colspan="3">Нет данных для отображения материалов.</td></tr>
+            }
+        </tbody>
+    </table>
+
+    <h3>Управление бутиками</h3>
+    <a id="showAddBoutiqueForm" style="cursor:pointer;" class="button">Добавить новый бутик</a>
+
+    <div id="addBoutiqueForm" style="display:none;">
+        <h4>Добавление нового бутика</h4>
+        <form id="formAddBoutique" method="post" asp-action="CreateBoutique">
+            <label for="Boutique_address">Адрес бутика:</label>
+            <input type="text" name="Boutique_address" required>
+
+            <label for="Opening_time">Время открытия:</label>
+            <input type="time" name="Opening_time" required>
+
+            <label for="Closing_time">Время закрытия:</label>
+            <input type="time" name="Closing_time" required>
+
+            <button type="submit" class="button">Добавить</button>
+        </form>
+    </div>
+
+    <table>
+        <thead>
+            <tr><th>ID бутика</th><th>Адрес бутика</th><th>Время открытия</th><th>Время закрытия</th><th>Действия</th></tr>
+        </thead>
+        <tbody id="boutiqueTableBody">
+            @if (Model.Item2 != null && Model.Item2.Any())
+            {
+                foreach (var boutique in Model.Item2)
+                {
+                    <tr data-id="@boutique.Id_boutique">
+                        <td>@boutique.Id_boutique</td>
+                        <td>
+                            <span class="boutique-address">@boutique.Boutique_address</span>
+                            <input type="text" class="edit-boutique-address" value="@boutique.Boutique_address" style="display:none;" />
+                        </td>
+                        <td>
+                            <span class="opening-time">@boutique.Opening_time.ToString(@"hh\:mm")</span>
+                            <input type="time" class="edit-opening-time" value="@boutique.Opening_time.ToString(@"hh\:mm")" style="display:none;" />
+                        </td>
+                        <td>
+                            <span class="closing-time">@boutique.Closing_time.ToString(@"hh\:mm")</span>
+                            <input type="time" class="edit-closing-time" value="@boutique.Closing_time.ToString(@"hh\:mm")" style="display:none;" />
+                        </td>
+                        <td>
+                            <button class="edit-boutique button">Редактировать</button>
+                            <button class="save-boutique button" style="display:none;">Сохранить изменения</button>
+                            <button class="delete-boutique button" data-id="@boutique.Id_boutique">Удалить</button>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr><td colspan="5">Нет данных для отображения бутиков.</td></tr>
+            }
+        </tbody>
+    </table>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+        // Обработка отображения формы добавления нового бутика
+        $(document).ready(function () {
+            $('#showAddBoutiqueForm').click(function () {
+                $('#addBoutiqueForm').toggle();
+            });
+
+            // Добавление нового бутика
+            $('#formAddBoutique').submit(function (event) {
+                event.preventDefault();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("CreateBoutique")',
+                    data: $(this).serialize(),
+                    success: function (response) {
+                        if (response.success) {
+                            location.reload();
+                        } else {
+                            alert('Ошибка при добавлении бутика.');
+                        }
+                    },
+                    error: function () {
+                        alert('Ошибка соединения с сервером.');
+                    }
+                });
+            });
+
+            // Редактирование бутика
+            $('.edit-boutique').click(function () {
+                var row = $(this).closest('tr');
+
+                row.find('.edit-boutique-address').show();
+                row.find('.boutique-address').hide();
+
+                row.find('.edit-opening-time').show();
+                row.find('.opening-time').hide();
+
+                row.find('.edit-closing-time').show();
+                row.find('.closing-time').hide();
+
+                row.find('.save-boutique').show();
+                $(this).hide();
+            });
+
+            // Сохранение изменений бутика
+            $('.save-boutique').click(function () {
+                var row = $(this).closest('tr');
+
+                var boutiqueId = row.data('id');
+
+                var boutiqueAddress = row.find('.edit-boutique-address').val();
+                var openingTime = row.find('.edit-opening-time').val();
+                var closingTime = row.find('.edit-closing-time').val();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("EditBoutique")',
+                    data: { id: boutiqueId, boutiqueAddress: boutiqueAddress, openingTime: openingTime, closingTime: closingTime },
+                    success: function (response) {
+                        if (response.success) {
+                            row.find('.boutique-address').text(boutiqueAddress).show();
+                            row.find('.opening-time').text(openingTime).show();
+                            row.find('.closing-time').text(closingTime).show();
+
+                            row.find('.edit-boutique-address').hide();
+                            row.find('.edit-opening-time').hide();
+                            row.find('.edit-closing-time').hide();
+
+                            row.find('.save-boutique').hide();
+                            row.find('.edit-boutique').show();
+                        } else {
+                            alert('Ошибка при сохранении изменений бутика.');
+                        }
+                    },
+                    error: function () {
+                        alert('Ошибка соединения с сервером.');
+                    }
+                });
+            });
+
+            // Удаление бутика
+            $('.delete-boutique').click(function () {
+                var row = $(this).closest('tr');
+
+                if (confirm('Вы уверены, что хотите удалить этот бутик?')) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("DeleteBoutique")',
+                        data: { id: row.data('id') },
+                        success: function (response) {
+                            if (response.success) {
+                                row.remove(); // Удаляем строку из таблицы
+                                alert('Бутик успешно удален!');
+                            } else {
+                                alert('Ошибка при удалении бутика.');
+                            }
+                        },
+                        error: function () {
+                            alert('Ошибка соединения с сервером.');
+                        }
+                    });
+                }
+            });
+
+
+            $('#showAddTypeForm').click(function () {
+                $('#addTypeForm').toggle();
+            });
+
+            $('#showAddMaterialForm').click(function () {
+                $('#addMaterialForm').toggle();
+            });
+
+            // Добавление нового типа продукта
+            $('#formAddType').submit(function (event) {
+                event.preventDefault();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("CreateProductType")',
+                    data: $(this).serialize(),
+                    success: function (response) {
+                        if (response.success) {
+                            location.reload();
+                        } else {
+                            alert('Ошибка при добавлении типа продукта.');
+                        }
+                    },
+                    error: function () {
+                        alert('Ошибка соединения с сервером.');
+                    }
+                });
+            });
+
+            // Добавление нового материала
+            $('#formAddMaterial').submit(function (event) {
+                event.preventDefault();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("CreateProductMaterial")',
+                    data: $(this).serialize(),
+                    success: function (response) {
+                        if (response.success) {
+                            location.reload();
+                        } else {
+                            alert('Ошибка при добавлении материала.');
+                        }
+                    },
+                    error: function () {
+                        alert('Ошибка соединения с сервером.');
+                    }
+                });
+            });
+
+            // Редактирование типа продукта
+            $('.edit-product-type').click(function () {
+                var row = $(this).closest('tr');
+
+                row.find('.edit-product-type-name').show();
+                row.find('.product-type-name').hide();
+
+                row.find('.save-product-type').show();
+            row.find('.edit-product-type').hide();
+            });
+
+            // Сохранение изменений типа продукта
+            $('.save-product-type').click(function () {
+                var row = $(this).closest('tr');
+
+                var typeName = row.find('.edit-product-type-name').val();
+                var typeId = row.data('id');
+
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("EditProductType")',
+                    data: { id: typeId, productTypeName: typeName },
+                    success: function (response) {
+                        if (response.success) {
+                            row.find('.product-type-name').text(typeName).show();
+                            row.find('.edit-product-type-name').hide();
+
+                        row.find('.save-product-type').hide();
+                            row.find('.edit-product-type').show();
+                        } else {
+                            alert('Ошибка при сохранении изменений типа продукта.');
+                        }
+                    },
+                    error: function () {
+                        alert('Ошибка соединения с сервером.');
+                    }
+                });
+            });
+
+            // Удаление типа продукта
+            $('.delete-product-type').click(function () {
+                var row = $(this).closest('tr');
+                var id = row.data('id');
+
+                if (confirm('Вы уверены, что хотите удалить этот тип продукта?')) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("DeleteProductType")',
+                        data: { id: id },
+                        success: function (response) {
+                            if (response.success) {
+                                row.remove();
+                                alert('Тип продукта успешно удален!');
+                            } else {
+                                alert('Ошибка при удалении типа продукта.');
+                            }
+                        },
+                        error: function () {
+                            alert('Ошибка соединения с сервером.');
+                        }
+                    });
+                }
+            });
+
+            // Редактирование материала
+            $('.edit-material').click(function () {
+                var row = $(this).closest('tr');
+
+                row.find('.edit-material-name').show();
+                row.find('.material-name').hide();
+
+                row.find('.save-material').show();
+                row.find('.edit-material').hide();
+            });
+
+            // Сохранение изменений материала
+            $('.save-material').click(function () {
+                var row = $(this).closest('tr');
+
+                var materialName = row.find('.edit-material-name').val();
+                var materialId = row.data('id');
+
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("EditProductMaterial")',
+                    data: { id: materialId, materialName: materialName },
+                    success: function (response) {
+                        if (response.success) {
+                            row.find('.material-name').text(materialName).show();
+                            row.find('.edit-material-name').hide();
+
+                            row.find('.save-material').hide();
+                            row.find('.edit-material').show();
+                        } else {
+                            alert('Ошибка при сохранении изменений материала.');
+                        }
+                    },
+                    error: function () {
+                        alert('Ошибка соединения с сервером.');
+                    }
+                });
+            });
+
+            // Удаление материала
+            $('.delete-material').click(function () {
+                var row = $(this).closest('tr');
+                var id = row.data('id');
+
+                if (confirm('Вы уверены, что хотите удалить этот материал?')) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("DeleteProductMaterial")',
+                        data: { id: id },
+                        success: function (response) {
+                            if (response.success) {
+                                row.remove();
+                                alert('Материал успешно удален!');
+                            } else {
+                                alert('Ошибка при удалении материала.');
+                            }
+                        },
+                        error: function () {
+                            alert('Ошибка соединения с сервером.');
+                        }
+                    });
+                }
+            });
+
+
+            // Показать форму добавления новой роли
+            $('#showAddRoleForm').click(function () {
+                $('#addRoleForm').toggle(); // Переключаем видимость формы добавления
+            });
+
+            // Добавление новой роли
+            $('#formAddRole').submit(function (event) {
+                event.preventDefault(); // Предотвращаем стандартное поведение формы
+
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("CreateRole")',
+                    data: $(this).serialize(),
+                    success: function (response) {
+                        if (response.success) {
+                            location.reload(); // Перезагружаем страницу или обновляем таблицу динамически
+                        } else {
+                            alert('Ошибка при добавлении роли.');
+                        }
+                    },
+                    error: function () {
+                        alert('Ошибка соединения с сервером.');
+                    }
+                });
+            });
+
+            // Редактирование роли
+            $('.edit-role').click(function () {
+                var row = $(this).closest('tr');
+
+                // Показать поле для редактирования
+                row.find('.edit-role-name').show();
+
+                // Скрыть отображаемое значение
+                row.find('.role-name').hide();
+
+                // Показать кнопку сохранить и скрыть кнопку редактировать
+                row.find('.save-role').show();
+                $(this).hide();
+            });
+
+            // Сохранение изменений роли
+            $('.save-role').click(function () {
+                var row = $(this).closest('tr');
+
+                // Получение значения из поля ввода
+                var roleName = row.find('.edit-role-name').val();
+                var roleId = row.data('id'); // Получаем ID роли
+
+                // Логика для сохранения изменений (например, отправка на сервер)
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("EditRole")',
+                    data: { id: roleId, roleName: roleName },
+                    success: function (response) {
+                        if (response.success) {
+                            // Обновление отображаемого значения и скрытие полей редактирования
+                            row.find('.role-name').text(roleName).show();
+                            row.find('.edit-role-name').hide();
+
+                            // Скрыть кнопку сохранить и показать кнопку редактировать
+                            row.find('.save-role').hide();
+                            row.find('.edit-role').show();
+                        } else {
+                            alert('Ошибка при сохранении изменений роли.');
+                        }
+                    },
+                    error: function () {
+                        alert('Ошибка соединения с сервером.');
+                    }
+                });
+            });
+
+            // Удаление роли
+            $('.delete-role').click(function () {
+                var row = $(this).closest('tr');
+                var id = row.data('id');
+
+                if (confirm('Вы уверены, что хотите удалить эту роль?')) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("DeleteRole")',
+                        data: { id: id },
+                        success: function (response) {
+                            if (response.success) {
+                                row.remove(); // Удаляем строку из таблицы
+                                alert('Роль успешно удалена!');
+                            } else {
+                                alert('Ошибка при удалении роли.');
+                            }
+                        },
+                        error: function () {
+                            alert('Ошибка соединения с сервером.');
+                        }
+                    });
+                }
+            });
+
+            // Показать форму добавления нового пользователя
+            $('#showAddUserForm').click(function () {
+                $('#addUserForm').toggle(); // Переключаем видимость формы добавления
+            });
+
+            // Добавление нового пользователя
+            $('#formAddUser').submit(function (event) {
+                event.preventDefault(); // Предотвращаем стандартное поведение формы
+
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("CreateUser")',
+                    data: $(this).serialize(),
+                    success: function (response) {
+                        if (response.success) {
+                            location.reload(); // Перезагружаем страницу или обновляем таблицу динамически
+                        } else {
+                            alert('Ошибка при добавлении пользователя.');
+                        }
+                    },
+                    error: function () {
+                        alert('Ошибка соединения с сервером.');
+                    }
+                });
+            });
+
+            $('.edit-user').click(function () {
+                var row = $(this).closest('tr');
+
+                // Показать поля для редактирования
+                row.find('.edit-user-first-name, .edit-user-last-name, .edit-user-middle-name, .edit-user-email, .edit-user-password, .edit-user-role').show();
+
+                // Скрыть отображаемые значения
+                row.find('.user-first-name, .user-last-name, .user-middle-name, .user-email, .user-password, .user-role').hide();
+
+                // Показать кнопку сохранить и скрыть кнопку редактировать
+                row.find('.save-user').show();
+                $(this).hide();
+            });
+
+            // Пример скрипта для сохранения изменений
+            $('.save-user').click(function () {
+                var row = $(this).closest('tr');
+
+                // Получение значений из полей ввода
+                var firstName = row.find('.edit-user-first-name').val();
+                var lastName = row.find('.edit-user-last-name').val();
+                var middleName = row.find('.edit-user-middle-name').val();
+                var email = row.find('.edit-user-email').val();
+                var password = row.find('.edit-user-password').val();
+                var role = row.find('.edit-user-role').val();
+
+                // Логика для сохранения изменений (например, отправка на сервер)
+                // Здесь вы можете использовать AJAX или другой метод для отправки данных
+
+                // Для примера просто выводим в консоль
+                console.log({
+                    firstName: firstName,
+                    lastName: lastName,
+                    middleName: middleName,
+                    email: email,
+                    password: password,
+                    role: role
+                });
+
+                // Скрыть поля редактирования и показать отображаемые значения
+                row.find('.user-first-name').text(firstName).show();
+                row.find('.user-last-name').text(lastName).show();
+                row.find('.user-middle-name').text(middleName).show();
+                row.find('.user-email').text(email).show(); // Можно скрыть email по желанию
+                row.find('.user-password').text('******').show(); // Защита пароля
+                row.find('.user-role').text(row.find('.edit-user-role option:selected').text()).show();
+
+                // Скрыть поля ввода и кнопку сохранить
+                row.find('.edit-user-first-name, .edit-user-last-name, .edit-user-middle-name, .edit-user-email, .edit-user-password, .edit-user-role').hide();
+                row.find('.save-user').hide();
+                row.find('.edit-user').show();
+            });
+
+            // Удаление пользователя
+            $('.delete-user').click(function () {
+                var row = $(this).closest('tr');
+
+                var id = $(this).data('id');
+
+                if (confirm('Вы уверены, что хотите удалить этого пользователя?')) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("DeleteUser")',
+                        data: { id: id },
+                        success: function (response) {
+                            if (response.success) {
+                                row.remove(); // Удаляем строку из таблицы
+                                alert('Пользователь успешно удален!');
+                            } else {
+                                alert('Ошибка при удалении пользователя.');
+                            }
+                        },
+                        error: function () {
+                            alert('Ошибка соединения с сервером.');
+                        }
+                    });
+                }
+            });
+
+            $('.delete-product').click(function () {
+                var row = $(this).closest('tr');
+                var id = $(this).data('id');
+
+                if (confirm('Вы уверены, что хотите удалить этот товар?')) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("DeleteProduct")',
+                        data: { id: id },
+                        success: function (response) {
+                            if (response.success) {
+                                row.remove(); // Удаляем строку из таблицы
+                                alert('Товар успешно удален!');
+                            } else {
+                                alert('Ошибка при удалении товара.');
+                            }
+                        },
+                        error: function () {
+                            alert('Ошибка соединения с сервером.');
+                        }
+                    });
+                }
+            });
+            $('.edit-product').click(function () {
+                var row = $(this).closest('tr');
+                row.find('.edit-product-name, .edit-product-price, .edit-product-quantity, .edit-product-description, .edit-boutique, .edit-product-type, .edit-product-material, .edit-product-image-url').show();
+                row.find('.save-product').show();
+                $(this).hide();
+            });
+
+            $('.save-product').click(function () {
+                var row = $(this).closest('tr');
+                var id = row.data('id');
+                var updatedProduct = {
+                    Id_product: id,
+                    Product_name: row.find('.edit-product-name').val(),
+                    Price: row.find('.edit-product-price').val(),
+                    Quantity: row.find('.edit-product-quantity').val(),
+                    Product_description: row.find('.edit-product-description').val(),
+                    Id_boutique: row.find('.edit-boutique').val(),
+                    Id_type: row.find('.edit-product-type').val(),
+                    Id_material: row.find('.edit-product-material').val(),
+                    ImageUrls: row.find('.edit-product-image-url').val().split(',') // Получаем URL изображений
+                };
+
+                if (!updatedProduct.Product_name || !updatedProduct.Price || !updatedProduct.Quantity || !updatedProduct.Product_description) {
+                    alert('Пожалуйста, заполните все поля.');
+                    return;
+                }
+
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("EditProduct")',
+                    data: updatedProduct,
+                    success: function (response) {
+                        if (response.success) {
+                            // Обновляем отображаемые значения
+                            row.find('.product-name').text(updatedProduct.Product_name);
+                            row.find('.product-price').text(updatedProduct.Price);
+                            row.find('.product-quantity').text(updatedProduct.Quantity);
+                            row.find('.product-description').text(updatedProduct.Product_description);
+                            row.find('.product-image-url').text(updatedProduct.ImageUrls.join(', ')); // Обновляем отображаемый URL изображения
+
+                            // Скрываем поля ввода и показываем кнопку редактирования
+                        row.find('.edit-product-name, .edit-product-price, .edit-product-quantity, .edit-product-description, .edit-boutique, .edit-product-type, .edit-product-material, .edit-product-image-url').hide();
+                            row.find('.save-product').hide();
+                            row.find('.edit-product').show();
+                        } else {
+                            alert('Ошибка при обновлении товара.');
+                        }
+                    },
+                    error: function () {
+                        alert('Ошибка соединения с сервером.');
+                    }
+                });
+
+        
+             });
+
+        $('#showAddProductForm').click(function () {
+            $('#addProductForm').toggle();
+        });
+
+        $('#formAddProduct').submit(function (event) {
+            event.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("CreateProduct")',
+                data: $(this).serialize(),
+                success: function (data) {
+                    location.reload();
+                },
+                error: function (err) {
+                    alert('Ошибка при добавлении товара!');
+                }
+            });
+        });
+    });
+</script>
+    <a href="@Url.Action("Logout")" class="button">Выход</a>
+
+
